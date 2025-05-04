@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Apply a default font (you can also do this with Tailwind classes) */
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optional: style links globally */
+a {
+  @apply text-blue-600 hover:text-blue-800 font-medium;
+}
+
+/* Reset default body margin and allow full Tailwind control */
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: white; /* or use Tailwind in App.jsx */
+  color: black;
+}
+
+/* You can still style buttons here or use Tailwind classes instead */
+button {
+  @apply rounded-lg border border-transparent px-4 py-2 text-base font-medium bg-gray-200 hover:bg-gray-300 cursor-pointer transition;
+}
+
+/* Optional: light theme overrides (if needed) */
+@media (prefers-color-scheme: light) {
+  :root {
+    background-color: white;
+    color: black;
+  }
+}
