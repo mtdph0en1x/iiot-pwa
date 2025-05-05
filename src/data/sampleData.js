@@ -1,168 +1,38 @@
+
 // Production data for charts
-export const productionData = [
-    { name: '00:00', value: 40 },
-    { name: '02:00', value: 35 },
-    { name: '04:00', value: 45 },
-    { name: '06:00', value: 50 },
-    { name: '08:00', value: 65 },
-    { name: '10:00', value: 75 },
-    { name: '12:00', value: 70 },
-    { name: '14:00', value: 60 },
-    { name: '16:00', value: 65 },
-    { name: '18:00', value: 55 },
-    { name: '20:00', value: 50 },
-    { name: '22:00', value: 45 },
-  ];
-  
-  // Temperature data for charts
-  export const temperatureData = [
-    { name: '00:00', value: 68 },
-    { name: '02:00', value: 65 },
-    { name: '04:00', value: 67 },
-    { name: '06:00', value: 70 },
-    { name: '08:00', value: 72 },
-    { name: '10:00', value: 75 },
-    { name: '12:00', value: 78 },
-    { name: '14:00', value: 80 },
-    { name: '16:00', value: 77 },
-    { name: '18:00', value: 75 },
-    { name: '20:00', value: 72 },
-    { name: '22:00', value: 70 },
-  ];
-  
-  // Device data for tables
-  export const deviceData = [
-    {
-      id: 1,
-      name: 'Device A',
-      workorderId: 'WO-2023-001',
-      hubId: 'HUB-001',
-      uptime: '10d 12h 45m',
-      temperature: '72°C',
-      productionRate: '60 units/hr',
-      status: 'online',
+export const productionData = [{'name': '18:10', 'value': 78}, {'name': '19:10', 'value': 59}, {'name': '20:10', 'value': 44}, {'name': '21:10', 'value': 86}, {'name': '22:10', 'value': 95}, {'name': '23:10', 'value': 47}, {'name': '00:10', 'value': 81}, {'name': '01:10', 'value': 40}, {'name': '02:10', 'value': 32}, {'name': '03:10', 'value': 82}, {'name': '04:10', 'value': 51}, {'name': '05:10', 'value': 66}, {'name': '06:10', 'value': 85}, {'name': '07:10', 'value': 43}, {'name': '08:10', 'value': 60}, {'name': '09:10', 'value': 35}, {'name': '10:10', 'value': 51}, {'name': '11:10', 'value': 100}, {'name': '12:10', 'value': 91}, {'name': '13:10', 'value': 89}, {'name': '14:10', 'value': 82}, {'name': '15:10', 'value': 83}, {'name': '16:10', 'value': 44}, {'name': '17:10', 'value': 97}];
+
+// Temperature data for charts
+export const temperatureData = [{'name': '18:10', 'value': 73}, {'name': '19:10', 'value': 78}, {'name': '20:10', 'value': 85}, {'name': '21:10', 'value': 67}, {'name': '22:10', 'value': 70}, {'name': '23:10', 'value': 64}, {'name': '00:10', 'value': 78}, {'name': '01:10', 'value': 70}, {'name': '02:10', 'value': 75}, {'name': '03:10', 'value': 62}, {'name': '04:10', 'value': 80}, {'name': '05:10', 'value': 69}, {'name': '06:10', 'value': 63}, {'name': '07:10', 'value': 77}, {'name': '08:10', 'value': 65}, {'name': '09:10', 'value': 80}, {'name': '10:10', 'value': 79}, {'name': '11:10', 'value': 69}, {'name': '12:10', 'value': 70}, {'name': '13:10', 'value': 68}, {'name': '14:10', 'value': 76}, {'name': '15:10', 'value': 61}, {'name': '16:10', 'value': 69}, {'name': '17:10', 'value': 78}];
+
+// Device data for tables
+export const deviceData = [{'id': 1, 'name': 'Device A1', 'workorderId': 'WO-2023-001', 'hubId': 'HUB-001', 'uptime': '21d 18h 47m', 'temperature': '88°C', 'productionRate': '51 units/hr', 'status': 'warning'}, {'id': 2, 'name': 'Device B1', 'workorderId': 'WO-2023-002', 'hubId': 'HUB-002', 'uptime': '8d 9h 21m', 'temperature': '68°C', 'productionRate': '71 units/hr', 'status': 'error'}, {'id': 3, 'name': 'Device C1', 'workorderId': 'WO-2023-003', 'hubId': 'HUB-003', 'uptime': '18d 18h 32m', 'temperature': '80°C', 'productionRate': '73 units/hr', 'status': 'online'}, {'id': 4, 'name': 'Device D1', 'workorderId': 'WO-2023-004', 'hubId': 'HUB-004', 'uptime': '18d 2h 7m', 'temperature': '95°C', 'productionRate': '69 units/hr', 'status': 'online'}, {'id': 5, 'name': 'Device E1', 'workorderId': 'WO-2023-005', 'hubId': 'HUB-005', 'uptime': '0d 8h 29m', 'temperature': '87°C', 'productionRate': '62 units/hr', 'status': 'offline'}, {'id': 6, 'name': 'Device F1', 'workorderId': 'WO-2023-006', 'hubId': 'HUB-006', 'uptime': '1d 13h 54m', 'temperature': '86°C', 'productionRate': '72 units/hr', 'status': 'offline'}, {'id': 7, 'name': 'Device G1', 'workorderId': 'WO-2023-007', 'hubId': 'HUB-007', 'uptime': '4d 19h 42m', 'temperature': '86°C', 'productionRate': '49 units/hr', 'status': 'warning'}, {'id': 8, 'name': 'Device H1', 'workorderId': 'WO-2023-008', 'hubId': 'HUB-008', 'uptime': '19d 1h 24m', 'temperature': '65°C', 'productionRate': '47 units/hr', 'status': 'online'}, {'id': 9, 'name': 'Device I1', 'workorderId': 'WO-2023-009', 'hubId': 'HUB-009', 'uptime': '10d 6h 42m', 'temperature': '62°C', 'productionRate': '64 units/hr', 'status': 'online'}, {'id': 10, 'name': 'Device J1', 'workorderId': 'WO-2023-010', 'hubId': 'HUB-010', 'uptime': '1d 23h 40m', 'temperature': '91°C', 'productionRate': '64 units/hr', 'status': 'warning'}, {'id': 11, 'name': 'Device K1', 'workorderId': 'WO-2023-011', 'hubId': 'HUB-011', 'uptime': '14d 9h 60m', 'temperature': '72°C', 'productionRate': '44 units/hr', 'status': 'offline'}, {'id': 12, 'name': 'Device L1', 'workorderId': 'WO-2023-012', 'hubId': 'HUB-012', 'uptime': '7d 17h 41m', 'temperature': '74°C', 'productionRate': '60 units/hr', 'status': 'offline'}, {'id': 13, 'name': 'Device M1', 'workorderId': 'WO-2023-013', 'hubId': 'HUB-013', 'uptime': '25d 10h 38m', 'temperature': '92°C', 'productionRate': '56 units/hr', 'status': 'offline'}, {'id': 14, 'name': 'Device N1', 'workorderId': 'WO-2023-014', 'hubId': 'HUB-014', 'uptime': '15d 7h 7m', 'temperature': '63°C', 'productionRate': '34 units/hr', 'status': 'offline'}, {'id': 15, 'name': 'Device O1', 'workorderId': 'WO-2023-015', 'hubId': 'HUB-015', 'uptime': '23d 12h 31m', 'temperature': '75°C', 'productionRate': '60 units/hr', 'status': 'offline'}, {'id': 16, 'name': 'Device P1', 'workorderId': 'WO-2023-016', 'hubId': 'HUB-016', 'uptime': '20d 10h 29m', 'temperature': '62°C', 'productionRate': '72 units/hr', 'status': 'offline'}, {'id': 17, 'name': 'Device Q1', 'workorderId': 'WO-2023-017', 'hubId': 'HUB-017', 'uptime': '28d 9h 45m', 'temperature': '68°C', 'productionRate': '51 units/hr', 'status': 'error'}, {'id': 18, 'name': 'Device R1', 'workorderId': 'WO-2023-018', 'hubId': 'HUB-018', 'uptime': '19d 20h 53m', 'temperature': '92°C', 'productionRate': '72 units/hr', 'status': 'warning'}, {'id': 19, 'name': 'Device S1', 'workorderId': 'WO-2023-019', 'hubId': 'HUB-019', 'uptime': '4d 22h 35m', 'temperature': '79°C', 'productionRate': '34 units/hr', 'status': 'offline'}, {'id': 20, 'name': 'Device T1', 'workorderId': 'WO-2023-020', 'hubId': 'HUB-020', 'uptime': '6d 17h 3m', 'temperature': '63°C', 'productionRate': '58 units/hr', 'status': 'error'}, {'id': 21, 'name': 'Device U1', 'workorderId': 'WO-2023-021', 'hubId': 'HUB-021', 'uptime': '8d 20h 31m', 'temperature': '66°C', 'productionRate': '58 units/hr', 'status': 'error'}, {'id': 22, 'name': 'Device V1', 'workorderId': 'WO-2023-022', 'hubId': 'HUB-022', 'uptime': '30d 21h 44m', 'temperature': '67°C', 'productionRate': '59 units/hr', 'status': 'offline'}, {'id': 23, 'name': 'Device W1', 'workorderId': 'WO-2023-023', 'hubId': 'HUB-023', 'uptime': '2d 23h 47m', 'temperature': '87°C', 'productionRate': '49 units/hr', 'status': 'error'}, {'id': 24, 'name': 'Device X1', 'workorderId': 'WO-2023-024', 'hubId': 'HUB-024', 'uptime': '23d 19h 39m', 'temperature': '88°C', 'productionRate': '67 units/hr', 'status': 'online'}, {'id': 25, 'name': 'Device Y1', 'workorderId': 'WO-2023-025', 'hubId': 'HUB-025', 'uptime': '12d 23h 31m', 'temperature': '91°C', 'productionRate': '77 units/hr', 'status': 'maintenance'}, {'id': 26, 'name': 'Device @2', 'workorderId': 'WO-2023-026', 'hubId': 'HUB-026', 'uptime': '10d 22h 6m', 'temperature': '87°C', 'productionRate': '34 units/hr', 'status': 'maintenance'}, {'id': 27, 'name': 'Device A2', 'workorderId': 'WO-2023-027', 'hubId': 'HUB-027', 'uptime': '21d 20h 12m', 'temperature': '86°C', 'productionRate': '45 units/hr', 'status': 'maintenance'}, {'id': 28, 'name': 'Device B2', 'workorderId': 'WO-2023-028', 'hubId': 'HUB-028', 'uptime': '13d 1h 43m', 'temperature': '84°C', 'productionRate': '52 units/hr', 'status': 'online'}, {'id': 29, 'name': 'Device C2', 'workorderId': 'WO-2023-029', 'hubId': 'HUB-029', 'uptime': '24d 18h 34m', 'temperature': '62°C', 'productionRate': '33 units/hr', 'status': 'online'}, {'id': 30, 'name': 'Device D2', 'workorderId': 'WO-2023-030', 'hubId': 'HUB-030', 'uptime': '27d 5h 46m', 'temperature': '64°C', 'productionRate': '31 units/hr', 'status': 'offline'}, {'id': 31, 'name': 'Device E2', 'workorderId': 'WO-2023-031', 'hubId': 'HUB-031', 'uptime': '26d 0h 17m', 'temperature': '70°C', 'productionRate': '32 units/hr', 'status': 'maintenance'}, {'id': 32, 'name': 'Device F2', 'workorderId': 'WO-2023-032', 'hubId': 'HUB-032', 'uptime': '21d 22h 50m', 'temperature': '85°C', 'productionRate': '60 units/hr', 'status': 'warning'}, {'id': 33, 'name': 'Device G2', 'workorderId': 'WO-2023-033', 'hubId': 'HUB-033', 'uptime': '5d 14h 32m', 'temperature': '88°C', 'productionRate': '77 units/hr', 'status': 'warning'}, {'id': 34, 'name': 'Device H2', 'workorderId': 'WO-2023-034', 'hubId': 'HUB-034', 'uptime': '2d 10h 46m', 'temperature': '95°C', 'productionRate': '73 units/hr', 'status': 'online'}, {'id': 35, 'name': 'Device I2', 'workorderId': 'WO-2023-035', 'hubId': 'HUB-035', 'uptime': '11d 22h 43m', 'temperature': '77°C', 'productionRate': '32 units/hr', 'status': 'warning'}, {'id': 36, 'name': 'Device J2', 'workorderId': 'WO-2023-036', 'hubId': 'HUB-036', 'uptime': '16d 3h 41m', 'temperature': '68°C', 'productionRate': '68 units/hr', 'status': 'maintenance'}, {'id': 37, 'name': 'Device K2', 'workorderId': 'WO-2023-037', 'hubId': 'HUB-037', 'uptime': '4d 4h 36m', 'temperature': '84°C', 'productionRate': '46 units/hr', 'status': 'offline'}, {'id': 38, 'name': 'Device L2', 'workorderId': 'WO-2023-038', 'hubId': 'HUB-038', 'uptime': '0d 13h 6m', 'temperature': '92°C', 'productionRate': '77 units/hr', 'status': 'error'}, {'id': 39, 'name': 'Device M2', 'workorderId': 'WO-2023-039', 'hubId': 'HUB-039', 'uptime': '7d 16h 14m', 'temperature': '64°C', 'productionRate': '60 units/hr', 'status': 'warning'}, {'id': 40, 'name': 'Device N2', 'workorderId': 'WO-2023-040', 'hubId': 'HUB-040', 'uptime': '11d 14h 10m', 'temperature': '81°C', 'productionRate': '57 units/hr', 'status': 'offline'}, {'id': 41, 'name': 'Device O2', 'workorderId': 'WO-2023-041', 'hubId': 'HUB-041', 'uptime': '1d 12h 27m', 'temperature': '90°C', 'productionRate': '51 units/hr', 'status': 'error'}, {'id': 42, 'name': 'Device P2', 'workorderId': 'WO-2023-042', 'hubId': 'HUB-042', 'uptime': '12d 21h 22m', 'temperature': '91°C', 'productionRate': '53 units/hr', 'status': 'offline'}, {'id': 43, 'name': 'Device Q2', 'workorderId': 'WO-2023-043', 'hubId': 'HUB-043', 'uptime': '29d 15h 39m', 'temperature': '90°C', 'productionRate': '60 units/hr', 'status': 'online'}, {'id': 44, 'name': 'Device R2', 'workorderId': 'WO-2023-044', 'hubId': 'HUB-044', 'uptime': '10d 14h 54m', 'temperature': '78°C', 'productionRate': '69 units/hr', 'status': 'warning'}, {'id': 45, 'name': 'Device S2', 'workorderId': 'WO-2023-045', 'hubId': 'HUB-045', 'uptime': '26d 20h 10m', 'temperature': '92°C', 'productionRate': '42 units/hr', 'status': 'maintenance'}, {'id': 46, 'name': 'Device T2', 'workorderId': 'WO-2023-046', 'hubId': 'HUB-046', 'uptime': '23d 15h 51m', 'temperature': '63°C', 'productionRate': '40 units/hr', 'status': 'maintenance'}, {'id': 47, 'name': 'Device U2', 'workorderId': 'WO-2023-047', 'hubId': 'HUB-047', 'uptime': '19d 1h 7m', 'temperature': '89°C', 'productionRate': '43 units/hr', 'status': 'error'}, {'id': 48, 'name': 'Device V2', 'workorderId': 'WO-2023-048', 'hubId': 'HUB-048', 'uptime': '14d 19h 13m', 'temperature': '64°C', 'productionRate': '51 units/hr', 'status': 'error'}, {'id': 49, 'name': 'Device W2', 'workorderId': 'WO-2023-049', 'hubId': 'HUB-049', 'uptime': '4d 18h 47m', 'temperature': '64°C', 'productionRate': '76 units/hr', 'status': 'error'}, {'id': 50, 'name': 'Device X2', 'workorderId': 'WO-2023-050', 'hubId': 'HUB-050', 'uptime': '29d 17h 22m', 'temperature': '61°C', 'productionRate': '43 units/hr', 'status': 'online'}, {'id': 51, 'name': 'Device Y2', 'workorderId': 'WO-2023-051', 'hubId': 'HUB-051', 'uptime': '14d 14h 13m', 'temperature': '83°C', 'productionRate': '70 units/hr', 'status': 'error'}, {'id': 52, 'name': 'Device @3', 'workorderId': 'WO-2023-052', 'hubId': 'HUB-052', 'uptime': '13d 0h 45m', 'temperature': '94°C', 'productionRate': '33 units/hr', 'status': 'maintenance'}, {'id': 53, 'name': 'Device A3', 'workorderId': 'WO-2023-053', 'hubId': 'HUB-053', 'uptime': '0d 7h 1m', 'temperature': '83°C', 'productionRate': '64 units/hr', 'status': 'online'}, {'id': 54, 'name': 'Device B3', 'workorderId': 'WO-2023-054', 'hubId': 'HUB-054', 'uptime': '12d 3h 4m', 'temperature': '93°C', 'productionRate': '57 units/hr', 'status': 'offline'}, {'id': 55, 'name': 'Device C3', 'workorderId': 'WO-2023-055', 'hubId': 'HUB-055', 'uptime': '0d 15h 40m', 'temperature': '76°C', 'productionRate': '43 units/hr', 'status': 'offline'}, {'id': 56, 'name': 'Device D3', 'workorderId': 'WO-2023-056', 'hubId': 'HUB-056', 'uptime': '3d 20h 20m', 'temperature': '75°C', 'productionRate': '36 units/hr', 'status': 'offline'}, {'id': 57, 'name': 'Device E3', 'workorderId': 'WO-2023-057', 'hubId': 'HUB-057', 'uptime': '27d 19h 27m', 'temperature': '63°C', 'productionRate': '67 units/hr', 'status': 'maintenance'}, {'id': 58, 'name': 'Device F3', 'workorderId': 'WO-2023-058', 'hubId': 'HUB-058', 'uptime': '4d 0h 49m', 'temperature': '69°C', 'productionRate': '76 units/hr', 'status': 'error'}, {'id': 59, 'name': 'Device G3', 'workorderId': 'WO-2023-059', 'hubId': 'HUB-059', 'uptime': '10d 21h 4m', 'temperature': '62°C', 'productionRate': '46 units/hr', 'status': 'offline'}, {'id': 60, 'name': 'Device H3', 'workorderId': 'WO-2023-060', 'hubId': 'HUB-060', 'uptime': '23d 10h 40m', 'temperature': '63°C', 'productionRate': '71 units/hr', 'status': 'maintenance'}, {'id': 61, 'name': 'Device I3', 'workorderId': 'WO-2023-061', 'hubId': 'HUB-061', 'uptime': '3d 1h 6m', 'temperature': '72°C', 'productionRate': '50 units/hr', 'status': 'offline'}, {'id': 62, 'name': 'Device J3', 'workorderId': 'WO-2023-062', 'hubId': 'HUB-062', 'uptime': '20d 5h 60m', 'temperature': '73°C', 'productionRate': '54 units/hr', 'status': 'online'}, {'id': 63, 'name': 'Device K3', 'workorderId': 'WO-2023-063', 'hubId': 'HUB-063', 'uptime': '30d 22h 47m', 'temperature': '72°C', 'productionRate': '79 units/hr', 'status': 'online'}, {'id': 64, 'name': 'Device L3', 'workorderId': 'WO-2023-064', 'hubId': 'HUB-064', 'uptime': '28d 10h 57m', 'temperature': '60°C', 'productionRate': '65 units/hr', 'status': 'warning'}, {'id': 65, 'name': 'Device M3', 'workorderId': 'WO-2023-065', 'hubId': 'HUB-065', 'uptime': '26d 13h 30m', 'temperature': '77°C', 'productionRate': '59 units/hr', 'status': 'error'}, {'id': 66, 'name': 'Device N3', 'workorderId': 'WO-2023-066', 'hubId': 'HUB-066', 'uptime': '5d 23h 56m', 'temperature': '70°C', 'productionRate': '72 units/hr', 'status': 'warning'}, {'id': 67, 'name': 'Device O3', 'workorderId': 'WO-2023-067', 'hubId': 'HUB-067', 'uptime': '2d 7h 33m', 'temperature': '94°C', 'productionRate': '62 units/hr', 'status': 'offline'}, {'id': 68, 'name': 'Device P3', 'workorderId': 'WO-2023-068', 'hubId': 'HUB-068', 'uptime': '30d 3h 31m', 'temperature': '72°C', 'productionRate': '31 units/hr', 'status': 'maintenance'}, {'id': 69, 'name': 'Device Q3', 'workorderId': 'WO-2023-069', 'hubId': 'HUB-069', 'uptime': '22d 11h 30m', 'temperature': '65°C', 'productionRate': '72 units/hr', 'status': 'warning'}, {'id': 70, 'name': 'Device R3', 'workorderId': 'WO-2023-070', 'hubId': 'HUB-070', 'uptime': '15d 7h 40m', 'temperature': '92°C', 'productionRate': '51 units/hr', 'status': 'warning'}, {'id': 71, 'name': 'Device S3', 'workorderId': 'WO-2023-071', 'hubId': 'HUB-071', 'uptime': '17d 17h 23m', 'temperature': '72°C', 'productionRate': '50 units/hr', 'status': 'maintenance'}, {'id': 72, 'name': 'Device T3', 'workorderId': 'WO-2023-072', 'hubId': 'HUB-072', 'uptime': '23d 6h 59m', 'temperature': '88°C', 'productionRate': '32 units/hr', 'status': 'offline'}, {'id': 73, 'name': 'Device U3', 'workorderId': 'WO-2023-073', 'hubId': 'HUB-073', 'uptime': '15d 7h 17m', 'temperature': '61°C', 'productionRate': '64 units/hr', 'status': 'maintenance'}, {'id': 74, 'name': 'Device V3', 'workorderId': 'WO-2023-074', 'hubId': 'HUB-074', 'uptime': '8d 8h 17m', 'temperature': '75°C', 'productionRate': '61 units/hr', 'status': 'maintenance'}, {'id': 75, 'name': 'Device W3', 'workorderId': 'WO-2023-075', 'hubId': 'HUB-075', 'uptime': '20d 12h 31m', 'temperature': '74°C', 'productionRate': '57 units/hr', 'status': 'offline'}, {'id': 76, 'name': 'Device X3', 'workorderId': 'WO-2023-076', 'hubId': 'HUB-076', 'uptime': '24d 18h 12m', 'temperature': '71°C', 'productionRate': '39 units/hr', 'status': 'error'}, {'id': 77, 'name': 'Device Y3', 'workorderId': 'WO-2023-077', 'hubId': 'HUB-077', 'uptime': '25d 24h 42m', 'temperature': '70°C', 'productionRate': '30 units/hr', 'status': 'warning'}, {'id': 78, 'name': 'Device @4', 'workorderId': 'WO-2023-078', 'hubId': 'HUB-078', 'uptime': '21d 17h 32m', 'temperature': '64°C', 'productionRate': '52 units/hr', 'status': 'maintenance'}, {'id': 79, 'name': 'Device A4', 'workorderId': 'WO-2023-079', 'hubId': 'HUB-079', 'uptime': '13d 19h 48m', 'temperature': '80°C', 'productionRate': '47 units/hr', 'status': 'offline'}, {'id': 80, 'name': 'Device B4', 'workorderId': 'WO-2023-080', 'hubId': 'HUB-080', 'uptime': '10d 19h 3m', 'temperature': '65°C', 'productionRate': '37 units/hr', 'status': 'error'}, {'id': 81, 'name': 'Device C4', 'workorderId': 'WO-2023-081', 'hubId': 'HUB-081', 'uptime': '20d 10h 2m', 'temperature': '94°C', 'productionRate': '40 units/hr', 'status': 'error'}, {'id': 82, 'name': 'Device D4', 'workorderId': 'WO-2023-082', 'hubId': 'HUB-082', 'uptime': '5d 20h 19m', 'temperature': '67°C', 'productionRate': '47 units/hr', 'status': 'online'}, {'id': 83, 'name': 'Device E4', 'workorderId': 'WO-2023-083', 'hubId': 'HUB-083', 'uptime': '8d 24h 30m', 'temperature': '86°C', 'productionRate': '69 units/hr', 'status': 'maintenance'}, {'id': 84, 'name': 'Device F4', 'workorderId': 'WO-2023-084', 'hubId': 'HUB-084', 'uptime': '13d 11h 40m', 'temperature': '78°C', 'productionRate': '64 units/hr', 'status': 'warning'}, {'id': 85, 'name': 'Device G4', 'workorderId': 'WO-2023-085', 'hubId': 'HUB-085', 'uptime': '15d 19h 5m', 'temperature': '79°C', 'productionRate': '55 units/hr', 'status': 'offline'}, {'id': 86, 'name': 'Device H4', 'workorderId': 'WO-2023-086', 'hubId': 'HUB-086', 'uptime': '30d 3h 12m', 'temperature': '68°C', 'productionRate': '53 units/hr', 'status': 'maintenance'}, {'id': 87, 'name': 'Device I4', 'workorderId': 'WO-2023-087', 'hubId': 'HUB-087', 'uptime': '24d 7h 58m', 'temperature': '86°C', 'productionRate': '34 units/hr', 'status': 'maintenance'}, {'id': 88, 'name': 'Device J4', 'workorderId': 'WO-2023-088', 'hubId': 'HUB-088', 'uptime': '15d 21h 16m', 'temperature': '95°C', 'productionRate': '65 units/hr', 'status': 'error'}, {'id': 89, 'name': 'Device K4', 'workorderId': 'WO-2023-089', 'hubId': 'HUB-089', 'uptime': '6d 9h 54m', 'temperature': '76°C', 'productionRate': '33 units/hr', 'status': 'maintenance'}, {'id': 90, 'name': 'Device L4', 'workorderId': 'WO-2023-090', 'hubId': 'HUB-090', 'uptime': '29d 20h 29m', 'temperature': '95°C', 'productionRate': '63 units/hr', 'status': 'warning'}, {'id': 91, 'name': 'Device M4', 'workorderId': 'WO-2023-091', 'hubId': 'HUB-091', 'uptime': '26d 12h 8m', 'temperature': '70°C', 'productionRate': '30 units/hr', 'status': 'error'}, {'id': 92, 'name': 'Device N4', 'workorderId': 'WO-2023-092', 'hubId': 'HUB-092', 'uptime': '28d 5h 55m', 'temperature': '90°C', 'productionRate': '30 units/hr', 'status': 'error'}, {'id': 93, 'name': 'Device O4', 'workorderId': 'WO-2023-093', 'hubId': 'HUB-093', 'uptime': '9d 2h 24m', 'temperature': '65°C', 'productionRate': '36 units/hr', 'status': 'error'}, {'id': 94, 'name': 'Device P4', 'workorderId': 'WO-2023-094', 'hubId': 'HUB-094', 'uptime': '7d 4h 24m', 'temperature': '95°C', 'productionRate': '53 units/hr', 'status': 'warning'}, {'id': 95, 'name': 'Device Q4', 'workorderId': 'WO-2023-095', 'hubId': 'HUB-095', 'uptime': '14d 3h 10m', 'temperature': '77°C', 'productionRate': '47 units/hr', 'status': 'online'}, {'id': 96, 'name': 'Device R4', 'workorderId': 'WO-2023-096', 'hubId': 'HUB-096', 'uptime': '1d 16h 42m', 'temperature': '80°C', 'productionRate': '62 units/hr', 'status': 'warning'}, {'id': 97, 'name': 'Device S4', 'workorderId': 'WO-2023-097', 'hubId': 'HUB-097', 'uptime': '28d 23h 6m', 'temperature': '62°C', 'productionRate': '33 units/hr', 'status': 'maintenance'}, {'id': 98, 'name': 'Device T4', 'workorderId': 'WO-2023-098', 'hubId': 'HUB-098', 'uptime': '20d 8h 5m', 'temperature': '86°C', 'productionRate': '42 units/hr', 'status': 'online'}, {'id': 99, 'name': 'Device U4', 'workorderId': 'WO-2023-099', 'hubId': 'HUB-099', 'uptime': '6d 4h 56m', 'temperature': '95°C', 'productionRate': '65 units/hr', 'status': 'error'}, {'id': 100, 'name': 'Device V4', 'workorderId': 'WO-2023-100', 'hubId': 'HUB-100', 'uptime': '7d 9h 15m', 'temperature': '92°C', 'productionRate': '44 units/hr', 'status': 'offline'}];
+
+// Error data for tables
+export const errorData = [{'id': 1, 'name': 'Device A1', 'hubId': 'HUB-001', 'uptime': '15d 0h 37m', 'temperature': '95°C', 'alertCode': 'TEMP-001', 'suggestedAction': 'Replace part'}, {'id': 2, 'name': 'Device B1', 'hubId': 'HUB-002', 'uptime': '18d 20h 51m', 'temperature': '95°C', 'alertCode': 'TEMP-005', 'suggestedAction': 'Monitor temperature'}, {'id': 3, 'name': 'Device C1', 'hubId': 'HUB-003', 'uptime': '20d 0h 27m', 'temperature': '90°C', 'alertCode': 'TEMP-005', 'suggestedAction': 'Replace part'}, {'id': 4, 'name': 'Device D1', 'hubId': 'HUB-004', 'uptime': '14d 10h 59m', 'temperature': '93°C', 'alertCode': 'TEMP-003', 'suggestedAction': 'Monitor temperature'}, {'id': 5, 'name': 'Device E1', 'hubId': 'HUB-005', 'uptime': '16d 15h 11m', 'temperature': '93°C', 'alertCode': 'TEMP-005', 'suggestedAction': 'Check cooling system'}];
+
+// KPI data
+export const kpiData = {'overall': {'availability': 95, 'quality': 95, 'performance': 77, 'oee': 50}, 'monthly': [{'month': 'Jan', 'availability': 84, 'quality': 93, 'performance': 74, 'oee': 64}, {'month': 'Feb', 'availability': 85, 'quality': 86, 'performance': 78, 'oee': 57}, {'month': 'Mar', 'availability': 80, 'quality': 89, 'performance': 73, 'oee': 69}, {'month': 'Apr', 'availability': 84, 'quality': 89, 'performance': 77, 'oee': 51}, {'month': 'May', 'availability': 86, 'quality': 95, 'performance': 76, 'oee': 60}, {'month': 'Jun', 'availability': 90, 'quality': 92, 'performance': 71, 'oee': 64}]};
+
+// Configuration options
+export const configOptions = {
+  alertThresholds: {
+    temperature: {
+      warning: 80,
+      critical: 90,
     },
-    {
-      id: 2,
-      name: 'Device B',
-      workorderId: 'WO-2023-002',
-      hubId: 'HUB-002',
-      uptime: '8d 5h 20m',
-      temperature: '68°C',
-      productionRate: '55 units/hr',
-      status: 'online',
+    uptime: {
+      warning: '30d',
+      critical: '45d',
     },
-    {
-      id: 3,
-      name: 'Device C',
-      workorderId: 'WO-2023-003',
-      hubId: 'HUB-003',
-      uptime: '15d 3h 12m',
-      temperature: '85°C',
-      productionRate: '45 units/hr',
-      status: 'warning',
+    production: {
+      warning: 40,
+      critical: 30,
     },
-    {
-      id: 4,
-      name: 'Device D',
-      workorderId: 'WO-2023-004',
-      hubId: 'HUB-004',
-      uptime: '2d 8h 32m',
-      temperature: '70°C',
-      productionRate: '62 units/hr',
-      status: 'online',
-    },
-    {
-      id: 5,
-      name: 'Device E',
-      workorderId: 'WO-2023-005',
-      hubId: 'HUB-005',
-      uptime: '5d 16h 8m',
-      temperature: '95°C',
-      productionRate: '0 units/hr',
-      status: 'error',
-    },
-    {
-      id: 6,
-      name: 'Device F',
-      workorderId: 'WO-2023-006',
-      hubId: 'HUB-006',
-      uptime: '0d 0h 0m',
-      temperature: '25°C',
-      productionRate: '0 units/hr',
-      status: 'offline',
-    },
-    {
-      id: 7,
-      name: 'Device G',
-      workorderId: 'WO-2023-007',
-      hubId: 'HUB-007',
-      uptime: '1d 4h 15m',
-      temperature: '50°C',
-      productionRate: '0 units/hr',
-      status: 'maintenance',
-    },
-  ];
-  
-  // Error data for tables
-  export const errorData = [
-    {
-      id: 1,
-      name: 'Device C',
-      hubId: 'HUB-003',
-      uptime: '15d 3h 12m',
-      temperature: '85°C',
-      alertCode: 'TEMP-001',
-      suggestedAction: 'Monitor temperature',
-    },
-    {
-      id: 2,
-      name: 'Device E',
-      hubId: 'HUB-005',
-      uptime: '5d 16h 8m',
-      temperature: '95°C',
-      alertCode: 'TEMP-002',
-      suggestedAction: 'Check cooling system',
-    },
-  ];
-  
-  // KPI data
-  export const kpiData = {
-    overall: {
-      availability: 85,
-      quality: 92,
-      performance: 78,
-      oee: 61,
-    },
-    monthly: [
-      { month: 'Jan', availability: 82, quality: 90, performance: 75, oee: 55 },
-      { month: 'Feb', availability: 84, quality: 91, performance: 76, oee: 58 },
-      { month: 'Mar', availability: 83, quality: 92, performance: 77, oee: 59 },
-      { month: 'Apr', availability: 85, quality: 93, performance: 78, oee: 62 },
-      { month: 'May', availability: 87, quality: 92, performance: 79, oee: 63 },
-      { month: 'Jun', availability: 86, quality: 91, performance: 80, oee: 63 },
-    ],
-  };
-  
-  // Configuration options
-  export const configOptions = {
-    alertThresholds: {
-      temperature: {
-        warning: 80,
-        critical: 90,
-      },
-      uptime: {
-        warning: '30d',
-        critical: '45d',
-      },
-      production: {
-        warning: 40,
-        critical: 30,
-      },
-    },
-    maintenance: {
-      schedule: 'Monthly',
-      lastPerformed: '2025-04-15',
-      nextScheduled: '2025-05-15',
-    },
-  };
+  },
+  maintenance: {
+    schedule: 'Monthly',
+    lastPerformed: '2025-04-15',
+    nextScheduled: '2025-05-15',
+  },
+};
