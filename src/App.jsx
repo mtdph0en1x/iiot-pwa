@@ -9,6 +9,7 @@ import Errors from './pages/Errors';
 import Configuration from './pages/Configuration';
 import DeviceDetail from './pages/DeviceDetail';
 import Login from './pages/Login';
+import UserProfile from './pages/UserProfile';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Protected Route component
@@ -94,6 +95,11 @@ function AppRoutes() {
             <Route path="/device/:id" element={
               <ProtectedRoute>
                 <DeviceDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <UserProfile />
               </ProtectedRoute>
             } />
             

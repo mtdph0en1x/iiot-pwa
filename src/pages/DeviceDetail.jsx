@@ -5,11 +5,29 @@ import StatusBadge from '../components/StatusBadge';
 import { deviceData, temperatureData, productionData } from '../data/sampleData';
 import { Settings, RefreshCw, AlertTriangle, Power } from 'lucide-react';
 import SecondaryNavbar from '../components/SecondaryNavbar';
+import Alert from '../components/Alert';
 
 export default function UpdatedDeviceDetail() {
   const { id } = useParams();
   const [device, setDevice] = useState(null);
   const [secondaryTab, setSecondaryTab] = useState('temperature');
+  const [alert, setAlert] = useState(null);
+
+  const handleRestart = () => {
+    setAlert({
+      type: 'warning',
+      message: 'Device will restart.',
+    });
+    setTimeout(() => setAlert(null), 3000);
+  };
+
+  const handleEmergencyStop = () => {
+    setAlert({
+      type: 'error',
+      message: 'Emergency stop initiated!',
+    });
+    setTimeout(() => setAlert(null), 3000);
+  };
  
 
   useEffect(() => {
@@ -36,6 +54,16 @@ export default function UpdatedDeviceDetail() {
       <SecondaryNavbar activeTab={secondaryTab} setActiveTab={setSecondaryTab} />
       
       <div className="space-y-6 p-6">
+        {alert && (
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-full max-w-md">
+            <Alert
+              type={alert.type}
+              message={alert.message}
+              onClose={() => setAlert(null)}
+            />
+          </div>
+        )}
+
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-2xl font-bold">{device.name}</h2>
@@ -53,7 +81,7 @@ export default function UpdatedDeviceDetail() {
               <Settings className="w-4 h-4 mr-1" />
               Configure
             </button>
-            <button className="flex items-center px-3 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition">
+            <button onClick={handleEmergencyStop} className="flex items-center px-3 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition">
               <Power className="w-4 h-4 mr-1" />
               Emergency Stop
             </button>
@@ -225,7 +253,7 @@ export default function UpdatedDeviceDetail() {
             <div className="bg-white p-4 rounded-lg shadow">
               <h3 className="text-lg font-medium mb-4">Status Controls</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <button className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition">
+                <button onClick={handleRestart} className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition">
                   <div className="flex flex-col items-center">
                     <RefreshCw className="w-6 h-6 text-blue-500 mb-2" />
                     <span className="font-medium">Restart Device</span>
@@ -237,7 +265,7 @@ export default function UpdatedDeviceDetail() {
                     <span className="font-medium">Maintenance Mode</span>
                   </div>
                 </button>
-                <button className="p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition">
+                <button onClick={handleEmergencyStop} className="p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition">
                   <div className="flex flex-col items-center">
                     <Power className="w-6 h-6 text-red-500 mb-2" />
                     <span className="font-medium">Emergency Stop</span>
