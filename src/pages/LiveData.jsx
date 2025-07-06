@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import StatusBadge from '../components/StatusBadge';
 import PaginatedDataTable from '../components/DataTable';
@@ -8,7 +8,41 @@ import { Link } from 'react-router-dom';
 
 export default function LiveData() {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({ search: '', status: 'all' });
+  const [filteredData, setFilteredData] = useState(deviceData);
+
+  useEffect(() => {
+    applyFilters(filters);
+  }, []);
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters(prev => {
+      const newFilters = { ...prev, [name]: value };
+      applyFilters(newFilters); // Apply filters immediately
+      return newFilters;
+    });
+  };
+
+  const applyFilters = (currentFilters) => {
+    let data = [...deviceData];
+
+    // Filter by search term
+    if (currentFilters.search) {
+      data = data.filter(device => 
+        device.name.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
+        device.workorderId.toLowerCase().includes(currentFilters.workorderId.toLowerCase())
+      );
+    }
+
+    // Filter by status
+    if (currentFilters.status !== 'all') {
+      data = data.filter(device => device.status === currentFilters.status);
+    }
+
+    setFilteredData(data);
+  };
   
   // Simulate data refresh
   const handleRefresh = () => {
@@ -70,18 +104,18 @@ export default function LiveData() {
               Refresh
             </button>
             <button 
-              onClick={() => setShowFilterModal(true)}
+              onClick={() => setShowFilters(!showFilters)}
               className="flex items-center px-3 py-2 bg-gray-100 text-gray-600 rounded-md hover:bg-gray-200 transition"
             >
               <Filter size={16} className="mr-1" />
-              Filter
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
             </button>
           </div>
         </div>
         
         <PaginatedDataTable 
           columns={columns} 
-          data={deviceData} 
+          data={filteredData} 
           actions={rowActions}
           height="400px"
           isLoading={isRefreshing}
@@ -103,25 +137,39 @@ export default function LiveData() {
         </div>
       </div>
       
-      {/* We could add a filter modal here later */}
-      {showFilterModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h3 className="text-xl font-medium mb-4">Filter Options</h3>
-            {/* Filter form would go here */}
-            <div className="mt-6 flex justify-end space-x-3">
-              <button 
-                onClick={() => setShowFilterModal(false)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={() => setShowFilterModal(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              >
-                Apply Filters
-              </button>
+      {showFilters && (
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                <input
+                  type="text"
+                  id="search"
+                  name="search"
+                  value={filters.search}
+                  onChange={handleFilterChange}
+                  className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                  placeholder="Search by name or ID..."
+                />
+              </div>
+              <div>
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={filters.status}
+                  onChange={handleFilterChange}
+                  className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  <option value="all">All</option>
+                  <option value="online">Online</option>
+                  <option value="warning">Warning</option>
+                  <option value="error">Error</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="offline">Offline</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>

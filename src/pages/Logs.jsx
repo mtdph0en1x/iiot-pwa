@@ -7,6 +7,23 @@ import { Download, Filter } from 'lucide-react';
 export default function Logs() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({ 
+    search: '', 
+    status: 'all', 
+    startDate: '', 
+    endDate: '', 
+    device: 'all', 
+    eventType: 'all' 
+  });
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "activeFilter") {
+      setActiveFilter(value);
+    } else {
+      setFilters(prev => ({ ...prev, [name]: value }));
+    }
+  };
   
   // Define columns for the data table
   const columns = [
@@ -22,17 +39,28 @@ export default function Logs() {
     }
   ];
   
-  // Handle filter changes
-  const handleFilterChange = (filter) => {
-    setActiveFilter(filter);
-  };
+  
 
   // Filter data based on selected filter
   const getFilteredData = () => {
-    if (activeFilter === 'all') {
-      return deviceData;
+    let data = [...deviceData];
+
+    // Filter by search term
+    if (filters.search) {
+      data = data.filter(device => 
+        device.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+        device.workorderId.toLowerCase().includes(filters.search.toLowerCase())
+      );
     }
-    return deviceData.filter(device => device.status === activeFilter);
+
+    // Filter by status
+    if (filters.status !== 'all') {
+      data = data.filter(device => device.status === filters.status);
+    }
+
+    // Note: Date, device, and event type filters are not implemented as there is no date or event type data in the sample data.
+
+    return data;
   };
 
   return (
@@ -45,25 +73,6 @@ export default function Logs() {
               <Download size={16} className="mr-1" />
               Export Logs
             </button>
-            <div className="relative">
-              <select 
-                className="pl-3 pr-8 py-2 rounded-md border appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={activeFilter}
-                onChange={(e) => handleFilterChange(e.target.value)}
-              >
-                <option value="all">All Logs</option>
-                <option value="online">Online</option>
-                <option value="warning">Warning</option>
-                <option value="error">Error</option>
-                <option value="offline">Offline</option>
-                <option value="maintenance">Maintenance</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                </svg>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -90,6 +99,35 @@ export default function Logs() {
         {showFilters && (
           <div className="p-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                <input
+                  type="text"
+                  id="search"
+                  name="search"
+                  value={filters.search}
+                  onChange={handleFilterChange}
+                  className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                  placeholder="Search logs..."
+                />
+              </div>
+              <div>
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={filters.status}
+                  onChange={handleFilterChange}
+                  className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  <option value="all">All Logs</option>
+                  <option value="online">Online</option>
+                  <option value="warning">Warning</option>
+                  <option value="error">Error</option>
+                  <option value="offline">Offline</option>
+                  <option value="maintenance">Maintenance</option>
+                </select>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                 <input type="date" className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" />
