@@ -33,6 +33,22 @@ export const deviceService = {
       console.error('Error fetching devices:', error);
       throw error;
     }
+  },
+
+  /**
+   * Get detailed telemetry for a specific device (last 24 hours)
+   */
+  async getDeviceDetail(deviceId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/devices/${deviceId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching device detail:', error);
+      throw error;
+    }
   }
 };
 
