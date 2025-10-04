@@ -35,16 +35,16 @@ export default function KPI() {
     if (kpiData.length === 0) return { oee: 0, availability: 0, performance: 0, quality: 0 };
 
     const latest = kpiData[0];
-    const avgAvailability = latest.AvgAvailability * 100;
-    const quality = latest.QualityPercentage;
+    const availability = latest.LineAvailability;
+    const quality = latest.LineQualityPercentage;
     // Performance would need to be calculated based on actual vs target rate
     // For now we'll use 100 as placeholder since we don't have target data
     const performance = 100;
-    const oee = (avgAvailability * performance * quality) / 10000;
+    const oee = (availability * performance * quality) / 10000;
 
     return {
       oee: Math.round(oee),
-      availability: Math.round(avgAvailability),
+      availability: Math.round(availability),
       performance: Math.round(performance),
       quality: Math.round(quality)
     };
@@ -58,13 +58,13 @@ export default function KPI() {
     return {
       date: date.toLocaleDateString(),
       timestamp: item.WindowEnd,
-      availability: Math.round(item.AvgAvailability * 100),
-      quality: Math.round(item.QualityPercentage),
+      availability: Math.round(item.LineAvailability),
+      quality: Math.round(item.LineQualityPercentage),
       performance: 100, // Placeholder
-      oee: Math.round((item.AvgAvailability * 100 * item.QualityPercentage * 100) / 10000),
+      oee: Math.round((item.LineAvailability * item.LineQualityPercentage * 100) / 10000),
       goodCount: item.TotalGoodCount,
       badCount: item.TotalBadCount,
-      errorCount: item.ErrorCount
+      productionRate: Math.round(item.LinePerformanceRate)
     };
   }).reverse();
 
