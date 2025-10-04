@@ -49,6 +49,47 @@ export const deviceService = {
       console.error('Error fetching device detail:', error);
       throw error;
     }
+  },
+
+  /**
+   * Get logs from blob storage
+   */
+  async getLogs(params = {}) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params.deviceId) queryParams.append('deviceId', params.deviceId);
+      if (params.date) queryParams.append('date', params.date);
+      if (params.container) queryParams.append('container', params.container);
+
+      const response = await fetch(`${API_BASE_URL}/logs?${queryParams}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching logs:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get available log dates
+   */
+  async getLogDates(deviceId = null, container = 'telemetry-qcs') {
+    try {
+      const queryParams = new URLSearchParams();
+      if (deviceId) queryParams.append('deviceId', deviceId);
+      queryParams.append('container', container);
+
+      const response = await fetch(`${API_BASE_URL}/logs/dates?${queryParams}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching log dates:', error);
+      throw error;
+    }
   }
 };
 
