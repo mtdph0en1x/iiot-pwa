@@ -24,8 +24,13 @@ export default function UpdatedDeviceDetail() {
       setTargetProductionRate(Math.round(data.current.AvgProductionRate));
 
       // Load status history
-      const history = await deviceService.getDeviceStatusHistory(id);
-      setStatusHistory(history);
+      try {
+        const history = await deviceService.getDeviceStatusHistory(id);
+        setStatusHistory(history || []);
+      } catch (historyError) {
+        console.error('Failed to load status history:', historyError);
+        setStatusHistory([]);
+      }
     } catch (error) {
       console.error('Failed to load device:', error);
       setAlert({
