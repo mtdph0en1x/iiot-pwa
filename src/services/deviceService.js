@@ -110,6 +110,44 @@ export const deviceService = {
       console.error('Error fetching line KPIs:', error);
       throw error;
     }
+  },
+
+  /**
+   * Send command to device via Service Bus queue
+   */
+  async sendDeviceCommand(deviceId, command, parameters = {}) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/devices/${deviceId}/command`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ command, parameters }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error sending device command:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get device status change history
+   */
+  async getDeviceStatusHistory(deviceId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/devices/${deviceId}/status-history`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching device status history:', error);
+      throw error;
+    }
   }
 };
 
@@ -117,8 +155,12 @@ export const deviceService = {
  * Determine device status based on telemetry
  */
 function determineStatus(device) {
+  // Check if device is offline (no data in last 5 minutes)
+  const lastUpdateTime = new Date(device.WindowEnd);
+  const minutesSinceUpdate = (Date.now() - lastUpdateTime) / 1000 / 60;
+
+  if (minutesSinceUpdate > 5) return 'offline';
   if (device.CurrentErrorCode !== 0) return 'error';
-  if (device.AvailabilityPercentage < 0.8) return 'offline';
   if (device.AvgTemperature > 80) return 'warning';
   return 'online';
 }

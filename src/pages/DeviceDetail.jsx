@@ -10,15 +10,22 @@ import Alert from '../components/Alert';
 export default function UpdatedDeviceDetail() {
   const { id } = useParams();
   const [deviceData, setDeviceData] = useState(null);
+  const [statusHistory, setStatusHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [secondaryTab, setSecondaryTab] = useState('temperature');
   const [alert, setAlert] = useState(null);
+  const [targetProductionRate, setTargetProductionRate] = useState(0);
 
   const loadDeviceData = async () => {
     try {
       setIsLoading(true);
       const data = await deviceService.getDeviceDetail(id);
       setDeviceData(data);
+      setTargetProductionRate(Math.round(data.current.AvgProductionRate));
+
+      // Load status history
+      const history = await deviceService.getDeviceStatusHistory(id);
+      setStatusHistory(history);
     } catch (error) {
       console.error('Failed to load device:', error);
       setAlert({
@@ -27,6 +34,26 @@ export default function UpdatedDeviceDetail() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleUpdateProductionRate = async () => {
+    try {
+      await deviceService.sendDeviceCommand(id, 'AdjustProductionRate', {
+        targetProductionRate: targetProductionRate
+      });
+      setAlert({
+        type: 'success',
+        message: `Production rate command queued: ${targetProductionRate} u/hr`,
+      });
+      setTimeout(() => setAlert(null), 3000);
+    } catch (error) {
+      console.error('Failed to send production rate command:', error);
+      setAlert({
+        type: 'error',
+        message: 'Failed to send command to device',
+      });
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
@@ -241,7 +268,7 @@ export default function UpdatedDeviceDetail() {
                     />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="productionRate" stroke="#3B82F6" strokeWidth={2} name="Production Rate" />
+                    <Line type="monotone" dataKey="productionRate" stroke="#3B82F6" strokeWidth={2} name="Production Rate (u/hr)" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -263,28 +290,33 @@ export default function UpdatedDeviceDetail() {
                   <p className="mt-1 text-2xl font-semibold text-gray-600">{device.ErrorEvents || 0}</p>
                 </div>
               </div>
-              
+
               <div className="mt-6">
-                <h4 className="font-medium mb-2">Set Production Rate</h4>
+                <h4 className="font-medium mb-2">Set Target Production Rate</h4>
                 <div className="flex items-center space-x-4">
                   <div className="flex-1">
-                    <input 
-                      type="range" 
-                      min="0" 
-                      max="80" 
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" 
-                      defaultValue={parseInt(device.productionRate.replace(' units/hr', ''))} 
+                    <input
+                      type="range"
+                      min="0"
+                      max="150"
+                      value={targetProductionRate}
+                      onChange={(e) => setTargetProductionRate(parseInt(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                     />
                   </div>
                   <div className="w-24">
-                    <input 
-                      type="number" 
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                      defaultValue={parseInt(device.productionRate.replace(' units/hr', ''))} 
+                    <input
+                      type="number"
+                      value={targetProductionRate}
+                      onChange={(e) => setTargetProductionRate(parseInt(e.target.value) || 0)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
                   <div>
-                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                    <button
+                      onClick={handleUpdateProductionRate}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                    >
                       Apply
                     </button>
                   </div>
@@ -360,29 +392,35 @@ export default function UpdatedDeviceDetail() {
             <div className="bg-white p-4 rounded-lg shadow">
               <h3 className="text-lg font-medium mb-4">Recent Status Changes</h3>
               <div className="overflow-y-auto max-h-60">
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-10 text-xs text-gray-400">09:45</div>
-                    <div className="flex-1 p-3 bg-gray-50 rounded-lg">
-                      <p className="font-medium">Status changed to <span className="text-green-600">Online</span></p>
-                      <p className="text-sm text-gray-500">Connection restored after maintenance</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-10 text-xs text-gray-400">09:30</div>
-                    <div className="flex-1 p-3 bg-gray-50 rounded-lg">
-                      <p className="font-medium">Status changed to <span className="text-blue-600">Maintenance</span></p>
-                      <p className="text-sm text-gray-500">Scheduled maintenance performed</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-10 text-xs text-gray-400">09:00</div>
-                    <div className="flex-1 p-3 bg-gray-50 rounded-lg">
-                      <p className="font-medium">Status changed to <span className="text-yellow-600">Warning</span></p>
-                      <p className="text-sm text-gray-500">Temperature approaching threshold</p>
-                    </div>
-                  </li>
-                </ul>
+                {statusHistory.length > 0 ? (
+                  <ul className="space-y-3">
+                    {statusHistory.map((change, index) => {
+                      const statusColor = {
+                        online: 'text-green-600',
+                        warning: 'text-yellow-600',
+                        error: 'text-red-600',
+                        offline: 'text-gray-600'
+                      }[change.NewStatus] || 'text-gray-600';
+
+                      const timestamp = new Date(change.Timestamp);
+                      const timeStr = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                      return (
+                        <li key={index} className="flex items-start space-x-3">
+                          <div className="flex-shrink-0 w-10 text-xs text-gray-400">{timeStr}</div>
+                          <div className="flex-1 p-3 bg-gray-50 rounded-lg">
+                            <p className="font-medium">
+                              Status changed to <span className={statusColor}>{change.NewStatus.charAt(0).toUpperCase() + change.NewStatus.slice(1)}</span>
+                            </p>
+                            <p className="text-sm text-gray-500">{change.Reason}</p>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p className="text-gray-500 text-center py-4">No status changes recorded yet</p>
+                )}
               </div>
             </div>
           </div>

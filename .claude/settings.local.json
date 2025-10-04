@@ -4,7 +4,8 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
       "Read(//d/Repos/VSCode_repos/AgentFunctionApp/**)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Read(//d/VS_repos/AgentFunctionApp/AgentFunctionApp/Functions/**)"
     ],
     "deny": [],
     "ask": []
