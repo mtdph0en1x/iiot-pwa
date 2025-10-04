@@ -1,7 +1,7 @@
 // Service to fetch device data from Azure Functions API
 
 const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? '/api'  // Azure Static Web Apps auto-routes /api to functions
+  ? 'https://iiotfunc.azurewebsites.net/api'  // Azure Function App
   : 'http://localhost:7071/api';  // Local development
 
 export const deviceService = {
