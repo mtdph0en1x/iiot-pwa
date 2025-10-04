@@ -90,6 +90,26 @@ export const deviceService = {
       console.error('Error fetching log dates:', error);
       throw error;
     }
+  },
+
+  /**
+   * Get line KPI data
+   */
+  async getLineKPIs(lineId = null, daysBack = 30) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (lineId) queryParams.append('lineId', lineId);
+      queryParams.append('daysBack', daysBack.toString());
+
+      const response = await fetch(`${API_BASE_URL}/kpis?${queryParams}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching line KPIs:', error);
+      throw error;
+    }
   }
 };
 

@@ -1,36 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { kpiData } from '../data/sampleData';
+import { deviceService } from '../services/deviceService';
 import DashboardCard from '../components/DashboardCard';
 import PaginatedDataTable from '../components/DataTable';
 import { Activity, Check, Clock, TrendingUp, Download } from 'lucide-react';
 import SecondaryNavbar from '../components/SecondaryNavbar';
 
 export default function KPI() {
-  const { overall, monthly } = kpiData;
   const [activeTab, setActiveTab] = useState('goodProduction');
-  
+  const [kpiData, setKpiData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [daysBack, setDaysBack] = useState(30);
+
+  useEffect(() => {
+    loadKPIs();
+  }, [daysBack]);
+
+  const loadKPIs = async () => {
+    try {
+      setIsLoading(true);
+      const data = await deviceService.getLineKPIs(null, daysBack);
+      setKpiData(data);
+    } catch (error) {
+      console.error('Failed to load KPIs:', error);
+      setKpiData([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Calculate overall metrics from KPI data
+  const calculateOverall = () => {
+    if (kpiData.length === 0) return { oee: 0, availability: 0, performance: 0, quality: 0 };
+
+    const latest = kpiData[0];
+    const avgAvailability = latest.AvgAvailability * 100;
+    const quality = latest.QualityPercentage;
+    // Performance would need to be calculated based on actual vs target rate
+    // For now we'll use 100 as placeholder since we don't have target data
+    const performance = 100;
+    const oee = (avgAvailability * performance * quality) / 10000;
+
+    return {
+      oee: Math.round(oee),
+      availability: Math.round(avgAvailability),
+      performance: Math.round(performance),
+      quality: Math.round(quality)
+    };
+  };
+
+  const overall = calculateOverall();
+
+  // Group KPI data by day for charts
+  const dailyData = kpiData.map(item => {
+    const date = new Date(item.WindowEnd);
+    return {
+      date: date.toLocaleDateString(),
+      timestamp: item.WindowEnd,
+      availability: Math.round(item.AvgAvailability * 100),
+      quality: Math.round(item.QualityPercentage),
+      performance: 100, // Placeholder
+      oee: Math.round((item.AvgAvailability * 100 * item.QualityPercentage * 100) / 10000),
+      goodCount: item.TotalGoodCount,
+      badCount: item.TotalBadCount,
+      errorCount: item.ErrorCount
+    };
+  }).reverse();
+
   // Define columns for the KPI data table
   const columns = [
-    { header: 'Month', accessor: 'month' },
-    { 
-      header: 'Availability', 
+    {
+      header: 'Date',
+      accessor: 'date'
+    },
+    {
+      header: 'Availability',
       accessor: 'availability',
       render: (row) => `${row.availability}%`
     },
-    { 
-      header: 'Performance', 
+    {
+      header: 'Performance',
       accessor: 'performance',
       render: (row) => `${row.performance}%`
     },
-    { 
-      header: 'Quality', 
+    {
+      header: 'Quality',
       accessor: 'quality',
       render: (row) => `${row.quality}%`
     },
-    { 
-      header: 'OEE', 
+    {
+      header: 'OEE',
       accessor: 'oee',
       render: (row) => `${row.oee}%`
     }
@@ -86,115 +146,115 @@ export default function KPI() {
         {activeTab === 'goodProduction' && (
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="text-lg font-medium mb-4">Overall Good Production</h3>
-            <div className="h-96 rounded-lg">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={monthly}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="quality" name="Quality" stroke="#8884d8" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+            {isLoading ? (
+              <div className="h-96 flex items-center justify-center">
+                <div className="text-gray-500">Loading...</div>
+              </div>
+            ) : (
+              <div className="h-96 rounded-lg">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={dailyData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="quality" name="Quality %" stroke="#8884d8" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
         )}
         
         {activeTab === 'productionRate' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium mb-4">Production Rate Trend</h3>
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthly.map(item => ({
-                    month: item.month,
-                    value: item.performance
-                  }))}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" name="Production Rate" stroke="#3B82F6" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              <h3 className="text-lg font-medium mb-4">Availability Trend</h3>
+              {isLoading ? (
+                <div className="h-72 flex items-center justify-center">
+                  <div className="text-gray-500">Loading...</div>
+                </div>
+              ) : (
+                <div className="h-72">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={dailyData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis domain={[0, 100]} />
+                      <Tooltip />
+                      <Legend />
+                      <Line type="monotone" dataKey="availability" name="Availability %" stroke="#3B82F6" strokeWidth={2} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
             </div>
             <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium mb-4">Production Rate by Device</h3>
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={[
-                      { name: 'Device A', value: 60 },
-                      { name: 'Device B', value: 55 },
-                      { name: 'Device C', value: 45 },
-                      { name: 'Device D', value: 62 },
-                      { name: 'Device E', value: 0 },
-                      { name: 'Device F', value: 0 },
-                      { name: 'Device G', value: 0 }
-                    ]}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="value" name="Units/hr" fill="#3B82F6" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              <h3 className="text-lg font-medium mb-4">Good vs Bad Production</h3>
+              {isLoading ? (
+                <div className="h-72 flex items-center justify-center">
+                  <div className="text-gray-500">Loading...</div>
+                </div>
+              ) : (
+                <div className="h-72">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={dailyData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="goodCount" name="Good Count" fill="#10B981" />
+                      <Bar dataKey="badCount" name="Bad Count" fill="#EF4444" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
             </div>
           </div>
         )}
         
         {activeTab === 'failureFrequency' && (
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium mb-4">Failure Frequency Analysis</h3>
-            <div className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={[
-                    { name: 'Device A', count: 1 },
-                    { name: 'Device B', count: 0 },
-                    { name: 'Device C', count: 3 },
-                    { name: 'Device D', count: 2 },
-                    { name: 'Device E', count: 8 },
-                    { name: 'Device F', count: 1 },
-                    { name: 'Device G', count: 0 }
-                  ]}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="count" name="Failures" fill="#EF4444" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-medium mb-2">Most Common Failures</h4>
-              <ul className="space-y-2">
-                <li className="flex justify-between">
-                  <span>Temperature exceeding threshold</span>
-                  <span className="font-semibold">42%</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Communication errors</span>
-                  <span className="font-semibold">27%</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Power fluctuations</span>
-                  <span className="font-semibold">18%</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Mechanical failures</span>
-                  <span className="font-semibold">13%</span>
-                </li>
-              </ul>
-            </div>
+            <h3 className="text-lg font-medium mb-4">Error Frequency Analysis</h3>
+            {isLoading ? (
+              <div className="h-72 flex items-center justify-center">
+                <div className="text-gray-500">Loading...</div>
+              </div>
+            ) : (
+              <>
+                <div className="h-72">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={dailyData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="errorCount" name="Errors" fill="#EF4444" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium mb-2">Error Statistics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Total Errors (Period):</span>
+                      <span className="font-semibold">{dailyData.reduce((sum, item) => sum + item.errorCount, 0)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Average Errors per Day:</span>
+                      <span className="font-semibold">
+                        {dailyData.length > 0
+                          ? Math.round(dailyData.reduce((sum, item) => sum + item.errorCount, 0) / dailyData.length)
+                          : 0}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
         
@@ -203,18 +263,24 @@ export default function KPI() {
           <div className="p-4 border-b border-gray-200 flex justify-between items-center">
             <h3 className="text-lg font-medium">KPI Details</h3>
             <div>
-              <select className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="6month">Last 6 Months</option>
-                <option value="year">Last Year</option>
-                <option value="2year">Last 2 Years</option>
+              <select
+                className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={daysBack}
+                onChange={(e) => setDaysBack(parseInt(e.target.value))}
+              >
+                <option value="7">Last 7 Days</option>
+                <option value="30">Last 30 Days</option>
+                <option value="90">Last 90 Days</option>
+                <option value="180">Last 6 Months</option>
               </select>
             </div>
           </div>
-          
-          <PaginatedDataTable 
-            columns={columns} 
-            data={monthly} 
+
+          <PaginatedDataTable
+            columns={columns}
+            data={dailyData}
             height="300px"
+            isLoading={isLoading}
           />
         </div>
       </div>
