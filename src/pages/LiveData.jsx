@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import StatusBadge from '../components/StatusBadge';
 import PaginatedDataTable from '../components/DataTable';
-import { temperatureData, deviceData } from '../data/sampleData';
+import { deviceService } from '../services/deviceService';
 import { RefreshCw, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -10,29 +10,49 @@ export default function LiveData() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ search: '', status: 'all' });
-  const [filteredData, setFilteredData] = useState(deviceData);
+  const [devices, setDevices] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
+  // Load data on mount and set up auto-refresh
+  useEffect(() => {
+    loadDevices();
+
+    // Auto-refresh every 60 seconds
+    const interval = setInterval(() => {
+      loadDevices();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Apply filters when devices or filters change
   useEffect(() => {
     applyFilters(filters);
-  }, []);
+  }, [devices, filters]);
+
+  // Load devices from API
+  const loadDevices = async () => {
+    try {
+      const data = await deviceService.getDevices();
+      setDevices(data);
+    } catch (error) {
+      console.error('Failed to load devices:', error);
+    }
+  };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => {
-      const newFilters = { ...prev, [name]: value };
-      applyFilters(newFilters); // Apply filters immediately
-      return newFilters;
-    });
+    setFilters(prev => ({ ...prev, [name]: value }));
   };
 
   const applyFilters = (currentFilters) => {
-    let data = [...deviceData];
+    let data = [...devices];
 
     // Filter by search term
     if (currentFilters.search) {
-      data = data.filter(device => 
+      data = data.filter(device =>
         device.name.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
-        device.workorderId.toLowerCase().includes(currentFilters.workorderId.toLowerCase())
+        device.id.toLowerCase().includes(currentFilters.search.toLowerCase())
       );
     }
 
@@ -43,32 +63,31 @@ export default function LiveData() {
 
     setFilteredData(data);
   };
-  
-  // Simulate data refresh
-  const handleRefresh = () => {
+
+  // Manual refresh
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 800);
+    await loadDevices();
+    setTimeout(() => setIsRefreshing(false), 500);
   };
   
   // Define columns for the data table
   const columns = [
     {
-      header: 'Device Name',
-      accessor: 'name',
+      header: 'Device ID',
+      accessor: 'id',
       render: (row) => (
         <Link to={`/device/${row.id}`} className="text-blue-600 hover:text-blue-800 font-medium">
-          {row.name}
+          {row.id}
         </Link>
       )
     },
-    { header: 'Workorder ID', accessor: 'workorderId' },
-    { header: 'Uptime', accessor: 'uptime' },
+    { header: 'Device Type', accessor: 'deviceType' },
+    { header: 'Line', accessor: 'lineName' },
     { header: 'Temperature', accessor: 'temperature' },
     { header: 'Production Rate', accessor: 'productionRate' },
-    { 
-      header: 'Status', 
+    {
+      header: 'Status',
       accessor: 'status',
       render: (row) => <StatusBadge status={row.status} />
     },
@@ -122,20 +141,6 @@ export default function LiveData() {
         />
       </div>
       
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h3 className="text-lg font-medium mb-4">Live Temperature Readings</h3>
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={temperatureData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="#EF4444" strokeWidth={2} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
       
       {showFilters && (
         <div className="bg-white rounded-lg shadow">
