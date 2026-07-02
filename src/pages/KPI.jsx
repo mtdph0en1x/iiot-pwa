@@ -42,7 +42,7 @@ export default function KPI() {
     }
   };
 
-  // Calculate overall metrics from KPI data
+  // Calculate metrics from KPI data
   const calculateOverall = () => {
     if (kpiData.length === 0) return { oee: 0, availability: 0, performance: 0, quality: 0 };
 
@@ -88,7 +88,7 @@ export default function KPI() {
     return {
       oee: calcChange(latestOee, prevOee),
       availability: calcChange(latest.LineAvailability, previous.LineAvailability),
-      performance: '+0%', // Placeholder since performance is always 100
+      performance: '+0%', 
       quality: calcChange(latest.LineQualityPercentage, previous.LineQualityPercentage)
     };
   };
@@ -103,7 +103,7 @@ export default function KPI() {
       timestamp: item.WindowEnd,
       availability: Math.round(item.LineAvailability),
       quality: Math.round(item.LineQualityPercentage),
-      performance: 100, // Placeholder
+      performance: 100, 
       oee: Math.round((item.LineAvailability * item.LineQualityPercentage * 100) / 10000),
       goodCount: item.TotalGoodCount,
       badCount: item.TotalBadCount,
@@ -111,7 +111,7 @@ export default function KPI() {
     };
   }).reverse();
 
-  // Calculate error frequency data from error events
+  // Calculate error frequency data
   const calculateErrorFrequency = () => {
     if (errorData.length === 0) return [];
 
@@ -312,7 +312,7 @@ export default function KPI() {
           </div>
         )}
         
-        {/* KPI Details Table - Always visible */}
+        {/* KPI Details Table */}
         <div className="bg-white rounded-lg shadow">
           <div className="p-4 border-b border-gray-200 flex justify-between items-center">
             <h3 className="text-lg font-medium">KPI Details</h3>

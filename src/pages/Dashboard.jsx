@@ -78,7 +78,7 @@ export default function Dashboard() {
     });
   };
 
-  // Prepare quality trend data from KPI history
+  // Prepare quality trend data 
   const prepareQualityData = () => {
     if (kpiData.length === 0) return [];
 
@@ -91,7 +91,7 @@ export default function Dashboard() {
     });
   };
 
-  // Get devices with alerts
+  // Get alerts
   const getDevicesWithAlerts = () => {
     return devices
       .filter(d => d.status === 'error' || d.status === 'warning')
@@ -113,7 +113,7 @@ export default function Dashboard() {
   const qualityData = prepareQualityData();
   const alertDevices = getDevicesWithAlerts();
 
-  // Calculate changes (comparing latest to previous)
+  // Calculate changes 
   const calculateChange = (data) => {
     if (data.length < 2) return '+0%';
     const latest = data[data.length - 1].value;

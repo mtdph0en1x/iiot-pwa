@@ -13,7 +13,7 @@ export default function LiveData() {
   const [devices, setDevices] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  // Load data and set up auto-refresh
+  // Load data 
   useEffect(() => {
     loadDevices();
 

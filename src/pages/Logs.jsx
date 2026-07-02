@@ -72,7 +72,7 @@ export default function Logs() {
     }));
   };
 
-  // Common columns for all device types
+  // Columns for all device types
   const commonColumns = [
     {
       header: 'Time',

@@ -5,9 +5,9 @@ import { AlertCircle, CheckCircle, AlertTriangle } from 'lucide-react';
  * 
  * 
  * @param {Object} props
- * @param {string} props.type - The type of alert: "error", "success", or "warning"
- * @param {string} props.message - Optional additional message to display
- * @param {Function} props.onClose - Optional callback when the alert is closed
+ * @param {string} props.type 
+ * @param {string} props.message 
+ * @param {Function} props.onClose 
  */
 export default function Alert({ type, message, onClose }) {
   // Define styling based on type

@@ -50,21 +50,6 @@ export default function UpdatedDeviceDetail() {
     }
   };
 
-  const handleRestart = () => {
-    setAlert({
-      type: 'warning',
-      message: 'Device will restart.',
-    });
-    setTimeout(() => setAlert(null), 3000);
-  };
-
-  const handleEmergencyStop = () => {
-    setAlert({
-      type: 'error',
-      message: 'Emergency stop initiated!',
-    });
-    setTimeout(() => setAlert(null), 3000);
-  };
 
   useEffect(() => {
     loadDeviceData();

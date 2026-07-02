@@ -12,7 +12,7 @@ export default function Login() {
   const location = useLocation();
   const { login } = useAuth();
 
-  // Get the redirect path from location state or default to dashboard
+  // Get the redirect path 
   const from = location.state?.from?.pathname || '/dashboard';
 
   const handleSubmit = (e) => {

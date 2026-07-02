@@ -45,10 +45,10 @@ export default function SecondaryNavbar({ activeTab, setActiveTab }) {
   } else if (path.startsWith('/device/')) {
     navItems = deviceDetailNavItems;
   } else {
-    return null; // Don't show secondary navbar on other pages
+    return null; // No secondary navbar on other pages
   }
 
-  // If no activeTab is set, but items exist, default to the first item
+  // If no activeTab is set, default to the first item
   if (activeTab === undefined && navItems.length > 0) {
     setActiveTab(navItems[0].id);
   }
