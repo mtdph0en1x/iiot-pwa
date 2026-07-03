@@ -1,7 +1,7 @@
 // Service to fetch device data from Azure Functions API
 
 const API_BASE_URL = import.meta.env.PROD
-  ? 'https://iiotfunc-bugvhvexfbh0b7ha.westeurope-01.azurewebsites.net/api'  // Azure Function App
+  ? 'https://func-event-processing-iiot-dev.azurewebsites.net'  // Azure Function App
   : 'http://localhost:7071/api';  // Local development
 
 export const deviceService = {
@@ -75,7 +75,7 @@ export const deviceService = {
   /**
    * Get available log dates
    */
-  async getLogDates(deviceId = null, container = 'telemetry-qcs') {
+  async getLogDates(deviceId = null, container = 'telemetry') {
     try {
       const queryParams = new URLSearchParams();
       if (deviceId) queryParams.append('deviceId', deviceId);
