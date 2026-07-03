@@ -1,7 +1,7 @@
 // Service to fetch device data from Azure Functions API
 
 const API_BASE_URL = import.meta.env.PROD
-  ? 'https://func-event-processing-iiot-dev.azurewebsites.net'  // Azure Function App
+  ? 'https://func-event-processing-iiot-dev.azurewebsites.net/api'  // Azure Function App
   : 'http://localhost:7071/api';  // Local development
 
 export const deviceService = {
