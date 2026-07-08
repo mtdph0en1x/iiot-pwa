@@ -36,11 +36,11 @@ export const deviceService = {
   },
 
   /**
-   * Get telemetry for device (last 24 hours)
+   * Get telemetry for device with parameterized lookback window (default 24 hours)
    */
-  async getDeviceDetail(deviceId) {
+  async getDeviceDetail(deviceId, hoursBack = 24) {
     try {
-      const response = await fetch(`${API_BASE_URL}/devices/${deviceId}`);
+      const response = await fetch(`${API_BASE_URL}/devices/${deviceId}?hoursBack=${hoursBack}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

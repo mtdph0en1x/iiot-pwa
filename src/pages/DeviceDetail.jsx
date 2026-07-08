@@ -14,11 +14,12 @@ export default function UpdatedDeviceDetail() {
   const [secondaryTab, setSecondaryTab] = useState('temperature');
   const [alert, setAlert] = useState(null);
   const [targetProductionRate, setTargetProductionRate] = useState(0);
+  const [hoursBack, setHoursBack] = useState(24);
 
-  const loadDeviceData = async () => {
+  const loadDeviceData = async (hours = hoursBack) => {
     try {
       setIsLoading(true);
-      const data = await deviceService.getDeviceDetail(id);
+      const data = await deviceService.getDeviceDetail(id, hours);
       setDeviceData(data);
       setTargetProductionRate(Math.round(data.current.AvgProductionRate));
     } catch (error) {
@@ -52,8 +53,8 @@ export default function UpdatedDeviceDetail() {
 
 
   useEffect(() => {
-    loadDeviceData();
-  }, [id]);
+    loadDeviceData(hoursBack);
+  }, [id, hoursBack]);
 
   if (isLoading) {
     return (
@@ -119,11 +120,24 @@ export default function UpdatedDeviceDetail() {
           </div>
         )}
 
-        <div>
-          <h2 className="text-2xl font-bold">{device.DeviceId}</h2>
-          <div className="flex items-center mt-1">
-            <StatusBadge status={getStatus()} />
-            <span className="ml-2 text-gray-500">{device.DeviceType} • {device.LineName}</span>
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+          <div>
+            <h2 className="text-2xl font-bold">{device.DeviceId}</h2>
+            <div className="flex items-center mt-1">
+              <StatusBadge status={getStatus()} />
+              <span className="ml-2 text-gray-500">{device.DeviceType} • {device.LineName}</span>
+            </div>
+          </div>
+          <div>
+            <select
+              className="px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              value={hoursBack}
+              onChange={(e) => setHoursBack(parseInt(e.target.value))}
+            >
+              <option value="24">Last 24 Hours</option>
+              <option value="168">Last 7 Days</option>
+              <option value="720">Last 30 Days</option>
+            </select>
           </div>
         </div>
 
@@ -131,14 +145,19 @@ export default function UpdatedDeviceDetail() {
         {secondaryTab === 'temperature' && (
           <div className="space-y-6">
             <div className="bg-white p-4 rounded-lg shadow">
-              <h3 className="text-lg font-medium mb-4">Temperature Trend (24h)</h3>
+              <h3 className="text-lg font-medium mb-4">Temperature Trend ({hoursBack === 24 ? '24h' : hoursBack === 168 ? '7d' : '30d'})</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={historical}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                       dataKey="timestamp"
-                      tickFormatter={(time) => new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      tickFormatter={(time) => {
+                        const date = new Date(time);
+                        return hoursBack <= 24 
+                          ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                          : date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + date.toLocaleTimeString([], { hour: '2-digit' });
+                      }}
                     />
                     <YAxis />
                     <Tooltip />
@@ -236,14 +255,19 @@ export default function UpdatedDeviceDetail() {
         {secondaryTab === 'productionRate' && (
           <div className="space-y-6">
             <div className="bg-white p-4 rounded-lg shadow">
-              <h3 className="text-lg font-medium mb-4">Production Rate Trend (24h)</h3>
+              <h3 className="text-lg font-medium mb-4">Production Rate Trend ({hoursBack === 24 ? '24h' : hoursBack === 168 ? '7d' : '30d'})</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={historical}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                       dataKey="timestamp"
-                      tickFormatter={(time) => new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      tickFormatter={(time) => {
+                        const date = new Date(time);
+                        return hoursBack <= 24 
+                          ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                          : date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ' ' + date.toLocaleTimeString([], { hour: '2-digit' });
+                      }}
                     />
                     <YAxis />
                     <Tooltip />
